@@ -1,7 +1,7 @@
 // REACT = JSX: JavaScript + XML (HTML)
 interface ButtonProps{
   /* Não obrigatória: title?: string; */
-  /* Obrigatória */ title: string;
+  /* Obrigatória */ title?: string;
 }
 
 /* O 1º parâmetro da função exige as propriedades (props) do elemento
@@ -21,7 +21,7 @@ function App() {
       <Button title="Enviar 1"/>
       <Button title="Enviar 2"/>
       <Button title="Enviar 3"/>
-      <Button title="Oii"/>
+      <Button title=""/>
     </div>
   )
 }
