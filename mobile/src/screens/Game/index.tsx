@@ -4,7 +4,7 @@ import { GameParams } from "../../@types/navigation";
 import { DuoCard, DuoCardProps } from "../../components/DuoCard";
 
 import { useEffect, useState } from "react";
-import { FlatList, Image, TouchableOpacity, View } from "react-native";
+import { Text, FlatList, Image, TouchableOpacity, View } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -13,13 +13,13 @@ import logoImg from "../../assets/logo-nlw-esports.png";
 
 import { THEME } from "../../theme";
 import { styles } from "./styles";
+import React from "react";
 
 export function Game() {
   const [duos, setDuos] = useState<DuoCardProps[]>([]);
   const navigation = useNavigation();
   const route = useRoute();
   const game =
-    /* antes tava route.params (dando  erro) */
     route.params as GameParams;
 
   function handleGoBack() {
@@ -29,7 +29,7 @@ export function Game() {
   useEffect(() => {
     fetch(`http://192.168.100.58:3333/games/${game.id}/ads`)
       .then((response) => response.json())
-      .then((data) => setDuos(data));
+      .then((data) => {setDuos(data)});
   }, []);
 
   return (
@@ -41,10 +41,10 @@ export function Game() {
               name="chevron-thin-left"
               color={THEME.COLORS.CAPTION_300}
               size={20}
-            ></Entypo>
+            />
           </TouchableOpacity>
 
-          <Image source={logoImg} style={styles.logo}></Image>
+          <Image source={logoImg} style={styles.logo}/>
 
           <View style={styles.right} />
         </View>
@@ -61,7 +61,19 @@ export function Game() {
           data={duos}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
-            <DuoCard data={item} />
+            <DuoCard
+            data={item}
+            onConnect={() => {}}/>
+          )}
+
+          horizontal
+          style={styles.containerList}
+          contentContainerStyle={[duos.length > 0 ? styles.contentList : styles.emptyListContent]}
+          showsHorizontalScrollIndicator={false}
+          ListEmptyComponent={() => (
+            <Text style={styles.emptyListText}>
+              Não há anúncios publicos ainda.
+            </Text>
           )}
         />
       </SafeAreaView>

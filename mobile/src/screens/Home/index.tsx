@@ -1,12 +1,13 @@
 import logoImg from '../../assets/logo-nlw-esports.png';
 import {useEffect, useState} from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'; 'react-native-safe-area-context'
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native'
 import { GameCard, GameCardProps } from '../../components/GameCard';
 import { Image, FlatList } from 'react-native';
 import { Heading } from '../../components/Heading';
 import { styles } from './styles';
 import { Background } from '../../components/Background';
+import React from 'react';
 
 export function Home() {
 
@@ -32,12 +33,12 @@ export function Home() {
       <Image
         source={logoImg}
         style={styles.logo}
-      ></Image>
+      />
 
       <Heading
         title="Encontre seu duo!"
-        subtitle='Selecione o game que deseja jogar...'>
-      </Heading>
+        subtitle='Selecione o game que deseja jogar...'
+      />
 
       <FlatList
         data={games}
@@ -45,12 +46,13 @@ export function Home() {
         renderItem={({item}) => (
           <GameCard
             data={item}
-            onPress={() => handleOpenGame(item)}>
-            </GameCard>
+            onPress={() => handleOpenGame(item)}
+            />
         )}
         showsHorizontalScrollIndicator={false}
         horizontal
-        contentContainerStyle={styles.contentList}></FlatList>
+        contentContainerStyle={styles.contentList}
+        />
     </SafeAreaView>
     </Background>
   );
