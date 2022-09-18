@@ -1,8 +1,10 @@
 import { Background } from "../../components/Background";
 import { Heading } from "../../components/Heading";
 import { GameParams } from "../../@types/navigation";
+import { DuoCard, DuoCardProps } from "../../components/DuoCard";
 
-import { Image, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
+import { FlatList, Image, TouchableOpacity, View } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -13,21 +15,26 @@ import { THEME } from "../../theme";
 import { styles } from "./styles";
 
 export function Game() {
+  const [duos, setDuos] = useState<DuoCardProps[]>([]);
   const navigation = useNavigation();
-  const Route = useRoute();
+  const route = useRoute();
   const game =
     /* antes tava route.params (dando  erro) */
-    Route.params as GameParams;
+    route.params as GameParams;
 
   function handleGoBack() {
     navigation.goBack();
   }
 
+  useEffect(() => {
+    fetch(`http://192.168.100.58:3333/games/${game.id}/ads`)
+      .then((response) => response.json())
+      .then((data) => setDuos(data));
+  }, []);
+
   return (
     <Background>
-
       <SafeAreaView style={styles.container}>
-
         <View style={styles.header}>
           <TouchableOpacity onPress={handleGoBack}>
             <Entypo
@@ -43,18 +50,21 @@ export function Game() {
         </View>
 
         <Image
-        source={{uri: game.bannerUrl}}
-        style={styles.cover}
-        resizeMode="cover" >
-        </Image>
+          source={{ uri: game.bannerUrl }}
+          style={styles.cover}
+          resizeMode="cover"
+        />
 
-        <Heading
-          title="{game.title}"
-          subtitle="Conecte-se e comece a jogar!"
-        ></Heading>
+        <Heading title={game.title} subtitle="Conecte-se e comece a jogar!" />
 
+        <FlatList
+          data={duos}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => (
+            <DuoCard data={item} />
+          )}
+        />
       </SafeAreaView>
-
     </Background>
   );
 }
